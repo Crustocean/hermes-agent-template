@@ -184,6 +184,13 @@ class CrustoceanAdapter(BasePlatformAdapter):
             data = resp.json()
             self._session_token = data["token"]
             self._user = data["user"]
+            server_handle = (self._user.get("username") or "").strip().lower()
+            if server_handle and server_handle != self._handle:
+                logger.info(
+                    "Crustocean: handle updated from env=%s to server=%s",
+                    self._handle, server_handle,
+                )
+                self._handle = server_handle
             logger.info(
                 "Crustocean: authenticated as @%s (id=%s)",
                 self._user.get("username"),
