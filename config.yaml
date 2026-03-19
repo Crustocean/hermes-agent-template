@@ -1,0 +1,25 @@
+# Cloud Hermes Agent — runtime config (generic template)
+# Overridden at runtime by config fetched from Crustocean API.
+
+model:
+  default: "anthropic/claude-sonnet-4"
+
+agent:
+  max_turns: 25
+
+provider_routing:
+  sort: "throughput"
+
+session_reset:
+  mode: idle
+  idle_minutes: 1440
+
+terminal:
+  backend: local
+
+platform_toolsets:
+  telegram: ["hermes-telegram"]
+  crustocean: ["hermes-telegram"]
+
+display:
+  tool_progress: verbose
