@@ -833,7 +833,7 @@ class CrustoceanAdapter(BasePlatformAdapter):
     async def _check_relevance(self, content: str, sender_username: str) -> bool:
         """
         Ask the LLM whether a message during a summon window is addressed
-        to Reina or continuing her conversation. Includes recent conversation
+        to this agent or continuing its conversation. Includes recent conversation
         context so the model can tell if a short reply is a continuation.
         """
         if not self._openrouter_key:
@@ -1278,7 +1278,6 @@ class CrustoceanAdapter(BasePlatformAdapter):
                 payload["type"] = "tool_result"
                 payload["metadata"] = {
                     "trace": trace,
-                    "skill": "reina",
                 }
 
             try:
@@ -1708,7 +1707,7 @@ class CrustoceanAdapter(BasePlatformAdapter):
         )
 
         if summon_active:
-            # LLM relevance check — is this message for Reina?
+            # LLM relevance check — is this message for this agent?
             logger.info(
                 "Crustocean: [summon] checking message from @%s: \"%s\"",
                 sender_username,
@@ -1781,7 +1780,7 @@ class CrustoceanAdapter(BasePlatformAdapter):
         # Mark reactive timestamp so autonomous loop backs off
         self._last_reactive_time = time.time()
 
-        # If someone responds in a room where Reina recently spoke autonomously,
+        # If someone responds in a room where the agent recently spoke autonomously,
         # record engagement for the prompt that produced that output.
         if self._evolution_enabled and self._evolution._pending_speak_check:
             for prompt_id in list(self._evolution._pending_speak_check):
